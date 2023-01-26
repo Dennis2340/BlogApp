@@ -1,0 +1,187 @@
+import { useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import {postAdded} from "./postsSlice"
+import { getAllUsers, fetchUsers } from "../user/userSlice"
+import { userAdded } from "../user/userSlice"
+import { addNewPost } from "./postsSlice"
+import TextField from "@mui/material/TextField"
+import Button from "@mui/material/Button"
+import Box from "@mui/material/Box"
+import Select from "@mui/material/Select"
+import MenuItem from "@mui/material/MenuItem"
+import Typography from "@mui/material/Typography"
+import SearchAppBar from "../../components/Header"
+
+const AddPostForm = () => {
+
+
+  const dispatch = useDispatch()
+
+  const [title, setTitle] = useState("")
+  const [content, setContent] = useState("")
+  const [author, setAuthor] = useState("")
+  const [userId, setUserId] = useState("")
+  const [addRequestStatus, setAddRequestStatus] = useState("idle")
+  const allUsers = useSelector(getAllUsers)
+
+  const onTitleChanged = e => setTitle(e.target.value)
+  const onContentChanged = e => setContent(e.target.value)
+  const onAuthorChanged  = e => setUserId(e.target.value)
+  const authorName = e => setAuthor(e.target.value)
+
+  const canSave = [title, content, author].every(Boolean) && addRequestStatus === "idle"
+
+  const onSavedPostCliked = () => {
+   if(canSave){
+    try{
+      setAddRequestStatus("pending")
+      dispatch(addNewPost({title, body: content, author})).unwrap()
+
+      setTitle("")
+      setContent("")
+      setAuthor("")
+    }catch(error) {
+      console.log("Failed to save the post", error)
+    }finally{
+      setAddRequestStatus("idle")
+    }
+   }
+ }
+ 
+
+ const userOptions = allUsers.map(user => (
+  <MenuItem key={user.id} value={user.name}>
+    {user.name}
+  </MenuItem>
+ ))
+
+  return (
+    <>
+    <SearchAppBar/>
+    <section>
+    <Box sx={{textAlign: "center", marginTop: 5}}>
+     <Typography variant="h3" component="h3">
+      Add New Post
+     </Typography>
+    </Box>
+    
+      <Box sx={{
+        width: "50%",
+        display: {xs:"block", sm: "none"},
+        marginTop: 5,
+        marginLeft: "auto",
+        marginRight: "auto"
+      }}>
+      <div>
+      <TextField
+        label="Post Title"
+        variant="outlined"
+        fullWidth={true}
+        id="postTitle"
+        name="postTitle"
+        value={title}
+        onChange ={onTitleChanged}
+        />
+      </div>
+      <div style={{marginTop: 40, marginButtom: "none"}}>
+      <TextField
+        label="Content"
+        variant="outlined"
+        multiline={true}
+        rows={4}
+        maxRows={1000}
+        fullWidth={true}
+        id="postContent"
+        name="postContent"
+        value={content}
+        onChange ={onContentChanged}
+        />
+      </div>
+      <div style={{marginTop: 40}}>
+      <Select
+      label="Author"
+      fullWidth={true}
+     
+      value={author} 
+      onChange={authorName}
+          
+      >
+        {userOptions}
+        <option value=""></option>
+        
+      </Select>
+      </div>
+       <Button 
+       variant="contained" 
+       sx={{marginTop: 6}}
+       fullWidth={true}
+       onClick={onSavedPostCliked} 
+       disabled={!canSave}
+       >
+        Save Post
+       </Button>
+      </Box>
+
+      <Box sx={{
+         width: "50%",
+        display: {xs:"none", sm: "block"},
+        marginTop: 5,
+        marginLeft: "auto",
+        marginRight: "auto"
+       
+      }}>
+      <div>
+      <TextField
+        label="Post Title"
+        variant="outlined"
+        fullWidth={true}
+        id="postTitle"
+        name="postTitle"
+        value={title}
+        onChange ={onTitleChanged}
+        
+        />
+      </div>
+      
+      <div style={{marginTop: 40, marginButtom: "none", }}>
+      <TextField
+        label="Content"
+        variant="outlined"
+        multiline={true}
+        rows={4}
+        maxRows={1000}
+        fullWidth={true}
+        id="postContent"
+        name="postContent"
+        value={content}
+        onChange ={onContentChanged}
+        />
+      </div>
+      <div style={{marginTop: 40}}>
+      <Select
+      label="Author"
+      fullWidth={true}
+      
+      value={author} 
+      onChange={authorName}
+      >
+        {userOptions}
+        
+      </Select>
+      </div>
+       <Button
+       variant="contained" 
+       sx={{marginTop: 6}}
+       fullWidth={true}
+       onClick={onSavedPostCliked} 
+       disabled={!canSave}
+       >
+        Save Post
+        </Button>
+      </Box>
+    </section>
+    </>
+  )
+}
+
+export default AddPostForm

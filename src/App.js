@@ -1,25 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
-
-function App() {
+import React from 'react'
+import PostList from "./blogfeautures/post/PostList"
+import AddPostForm from "./blogfeautures/post/AddPostForm"
+import { Routes, Route } from "react-router-dom"
+import Layout from './components/Layout'
+import SinglePostPage from './blogfeautures/post/singlePostPage'
+import SearchAppBar from './components/Header'
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <>
+    <div>
+      
     </div>
-  );
+    <Routes>
+      
+       <Route path ="/" element={<Layout/>}/>
+       <Route index element={<PostList/>} />
+       <Route path="post">
+        <Route index element={<AddPostForm/>}/>
+        <Route path=":postId" element={<SinglePostPage/>}/>
+       </Route>
+
+   </Routes>
+
+   </>
+  )
 }
 
-export default App;
+export default App
