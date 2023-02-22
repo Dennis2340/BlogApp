@@ -11,12 +11,14 @@ import Select from "@mui/material/Select"
 import MenuItem from "@mui/material/MenuItem"
 import Typography from "@mui/material/Typography"
 import SearchAppBar from "../../components/Header"
+import { useNavigate} from "react-router-dom"
 
 const AddPostForm = () => {
 
 
   const dispatch = useDispatch()
 
+  const navigate = useNavigate()
   const [title, setTitle] = useState("")
   const [content, setContent] = useState("")
   const [author, setAuthor] = useState("")
@@ -40,6 +42,8 @@ const AddPostForm = () => {
       setTitle("")
       setContent("")
       setAuthor("")
+      navigate("/")
+      
     }catch(error) {
       console.log("Failed to save the post", error)
     }finally{

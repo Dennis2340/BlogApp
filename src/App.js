@@ -4,7 +4,7 @@ import AddPostForm from "./blogfeautures/post/AddPostForm"
 import { Routes, Route } from "react-router-dom"
 import Layout from './components/Layout'
 import SinglePostPage from './blogfeautures/post/singlePostPage'
-import SearchAppBar from './components/Header'
+import EditPostPage from './blogfeautures/post/EditPostPage'
 const App = () => {
   return (
     <>
@@ -18,6 +18,7 @@ const App = () => {
        <Route path="post">
         <Route index element={<AddPostForm/>}/>
         <Route path=":postId" element={<SinglePostPage/>}/>
+        <Route path ="edit/:postId" element={<EditPostPage/>}/>
        </Route>
 
    </Routes>

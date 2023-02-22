@@ -52,8 +52,11 @@ const PostList = () => {
     
     </Box>
   </section>
-  <Box sx={{marginLeft: "auto", marginRight: 0, display: {xs: "block", sm: "none"}}}>
-  <Spinner/>
+  <Box sx={{ marginLeft: "auto", marginRight: 0, display: {xs: "block", sm: "none"}}}>
+  <div>
+   <Spinner/>
+  </div>
+  
   </Box>
   </Box>
   

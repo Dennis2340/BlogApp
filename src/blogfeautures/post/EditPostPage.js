@@ -9,13 +9,13 @@ import Select from "@mui/material/Select"
 import Typography from "@mui/material/Typography"
 import MenuItem from "@mui/material/MenuItem"
 import SearchAppBar from "../../components/Header"
-import { updatePost } from "./postsSlice"
+import { updatePost, deletePost, selectPostById } from "./postsSlice"
 
 const EditPostPage = () => {
    const { postId } = useParams()
    const navigate = useNavigate()
 
-   const post = useSelector(state => state, Number(postId))
+   const post = useSelector(state => selectPostById(state, Number(postId)))
    
   const dispatch = useDispatch()
 
@@ -41,13 +41,27 @@ const EditPostPage = () => {
        setTitle("")
        setContent("")
        setAuthor("")
-       navigate(`/post/${postId}`)
+       navigate("/")
        
      }catch(error) {
        console.log("Failed to save the post", error)
      }finally{
        setAddRequestStatus("idle")
      }
+    }
+  }
+
+  const onDeletePost = () => {
+    try{
+      setAddRequestStatus("pending")
+      dispatch(deletePost({id : post.id})).unwrap()
+
+      setTitle("")
+      setContent("")
+      setAuthor("")
+      navigate(`/post/${postId}`)
+    }catch(error){
+       console.log(error)
     }
   }
   
@@ -62,7 +76,7 @@ const EditPostPage = () => {
     <section>
     <Box sx={{textAlign: "center", marginTop: 5}}>
      <Typography variant="h3" component="h3">
-      Add New Post
+      Edit Post
      </Typography>
     </Box>
     
@@ -178,6 +192,18 @@ const EditPostPage = () => {
        >
         Save Post
         </Button>
+        <div>
+        <Button
+       variant="contained"
+       color="error" 
+       sx={{marginTop: 3}}
+       fullWidth={true}
+       onClick={onDeletePost} 
+       disabled={!canSave}
+       >
+        Delete Post
+        </Button>
+        </div>
       </Box>
     </section>
     </>

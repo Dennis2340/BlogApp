@@ -46,6 +46,7 @@ const SinglePostPage = () => {
     </Box>
      </Card>
   </Box>
+   
   </>
   )
 }
